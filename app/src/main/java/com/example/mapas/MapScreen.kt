@@ -9,6 +9,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.Marker
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 
 @Composable
 fun MapScreen() {
@@ -23,10 +24,12 @@ fun MapScreen() {
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState
         ) {
-            // Añadir marcador en Arequipa, Perú
+            // Añadir marcador en Arequipa, Perú con icono personalizado
             Marker(
                 state = rememberMarkerState(position = ArequipaLocation),
-                title = "Arequipa, Perú"
+                icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_mountain),
+                title = "Arequipa, Perú",
+                snippet = "Ciudad Blanca"
             )
         }
     }
