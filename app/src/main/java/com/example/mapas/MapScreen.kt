@@ -18,12 +18,13 @@ import com.google.maps.android.compose.rememberMarkerState
 
 @Composable
 fun MapScreen() {
+    // 1. Datos: ubicación, cameraPositionState, locations, listas de polígonos y polilíneas
     val arequipaLocation = LatLng(-16.4040102, -71.559611) // Arequipa, Perú
     val cameraPositionState = rememberCameraPositionState {
         position = com.google.android.gms.maps.model.CameraPosition.fromLatLngZoom(arequipaLocation, 12f)
     }
 
-    // Controlar la cámara programáticamente (animar a Yura)
+    // 2. Control de cámara programático (hacia Yura)
     LaunchedEffect(Unit) {
         cameraPositionState.animate(
             update = CameraUpdateFactory.newLatLngZoom(LatLng(-16.2520984, -71.6836503), 12f),
@@ -33,9 +34,9 @@ fun MapScreen() {
 
     // Lista de múltiples ubicaciones (marcadores)
     val locations = listOf(
-        LatLng(-16.433415, -71.5442652), // JLByR
-        LatLng(-16.4205151, -71.4945209), // Paucarpata
-        LatLng(-16.3524187, -71.5675994)  // Zamacola
+        LatLng(-16.433415,-71.5442652), // JLByR
+        LatLng(-16.4205151,-71.4945209), // Paucarpata
+        LatLng(-16.3524187,-71.5675994)  // Zamacola
     )
 
     // Polígonos
@@ -60,12 +61,22 @@ fun MapScreen() {
         LatLng(-16.399299, -71.536721)
     )
 
-    // Polilíneas (Ruta de ejemplo conectando Arequipa con Yura)
-    val routePolyline = listOf(
+    // Polilíneas de ejemplo (Rutas)
+    val routePolyline1 = listOf(
+        LatLng(-16.398866, -71.536961),
+        LatLng(-16.422704, -71.530830),
+        LatLng(-16.432292, -71.509145)
+    )
+
+    val routePolyline2 = listOf(
         arequipaLocation,
-        LatLng(-16.380000, -71.560000),
-        LatLng(-16.320000, -71.620000),
-        LatLng(-16.2520984, -71.6836503) // Yura
+        LatLng(-16.4205151, -71.4945209),
+        LatLng(-16.3524187, -71.5675994)
+    )
+
+    val routePolyline3 = listOf(
+        LatLng(-16.433415, -71.5442652),
+        LatLng(-16.2520984, -71.6836503)
     )
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -73,7 +84,7 @@ fun MapScreen() {
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState
         ) {
-            // Marcador principal en Arequipa
+            // Marker de Arequipa
             Marker(
                 state = rememberMarkerState(position = arequipaLocation),
                 icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE),
@@ -81,7 +92,7 @@ fun MapScreen() {
                 snippet = "Ciudad Blanca"
             )
 
-            // Varios marcadores
+            // locations.forEach { Marker(...) }
             locations.forEach { location ->
                 Marker(
                     state = rememberMarkerState(position = location),
@@ -90,7 +101,7 @@ fun MapScreen() {
                 )
             }
 
-            // Polígonos
+            // Polygon x3
             Polygon(
                 points = plazaDeArmasPolygon,
                 strokeColor = Color.Red,
@@ -110,11 +121,21 @@ fun MapScreen() {
                 strokeWidth = 5f
             )
 
-            // Polilínea de ruta hacia Yura
+            // Polyline x3 (Ejemplos de rutas con colores personalizados)
             Polyline(
-                points = routePolyline,
+                points = routePolyline1,
                 color = Color.Magenta,
                 width = 8f
+            )
+            Polyline(
+                points = routePolyline2,
+                color = Color.Cyan,
+                width = 8f
+            )
+            Polyline(
+                points = routePolyline3,
+                color = Color.Green,
+                width = 6f
             )
         }
     }
